@@ -1,0 +1,45 @@
+﻿<Window x:Class="RouteTableTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:props="clr-namespace:RouteTableTool.Properties"
+        xmlns:local="clr-namespace:RouteTableTool"
+        mc:Ignorable="d"
+        Title="{x:Static props:Resources.Title}" Height="550" Width="400">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ToolBarPanel Grid.Row="0" Grid.Column="0">
+            <ToolBar>
+                <TextBox MinWidth="120" x:Name="ProcessName" ToolTip="{x:Static props:Resources.Process}" />
+                <Button x:Name="ActionStart" Content="▶" Click="ActionStart_Click"/>
+                <Button x:Name="ActionStop" Content="▮" Click="ActionStop_Click" />
+                <Separator/>
+                <Button Content="{x:Static props:Resources.Import}" Click="ActionImport_Click" />
+                <Button Content="{x:Static props:Resources.Save}" Click="ActionSave_Click" />
+                <Button Content="{x:Static props:Resources.Clear}" Click="ActionClear_Click" />
+            </ToolBar>
+            <ToolBar>
+                <ComboBox x:Name="Interfaces" MinWidth="200" MaxWidth="300" ToolTip="{x:Static props:Resources.Interface}" />
+                <Button Content="↻" Click="ActionRefresh_Click" />
+            </ToolBar>
+            <ToolBar>
+                <ComboBox x:Name="GateWays" MinWidth="120" ToolTip="{x:Static props:Resources.Gateway}" />
+                <Button Content="↻" Click="ActionRefresh_Click"  />
+                <Separator/>
+                <Button Content="{x:Static props:Resources.Write}" Click="CreateRoute_Click" />
+                <Button Content="{x:Static props:Resources.Reverse}" Click="DeleteRoute_Click"/>
+            </ToolBar>
+        </ToolBarPanel>
+        <ListBox x:Name="IPList" Grid.Row="1" Grid.Column="0" Margin="2 0" SelectionMode="Extended" />
+
+    </Grid>
+
+</Window>
