@@ -20,9 +20,6 @@ namespace RouteTableTool
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<string> tasklist = new List<string>();
-        private List<string> pids = new List<string>();
-        private List<string> netstat = new List<string>();
         private List<string> ips = new List<string>();
         private string processname = "";
         private bool loop = false;
@@ -130,6 +127,9 @@ namespace RouteTableTool
         {
             while (loop)
             {
+                List<string> tasklist = new List<string>();
+                List<string> pids = new List<string>();
+                List<string> netstat = new List<string>();
                 try
                 {
                     using (Process ProcPid = new Process())
@@ -141,14 +141,13 @@ namespace RouteTableTool
                         ProcPid.StartInfo.RedirectStandardOutput = true;
                         ProcPid.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         ProcPid.Start();
-                        ProcPid.OutputDataReceived += (s, ex) =>
+                        StreamReader reader = ProcPid.StandardOutput;
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
                         {
-                            lock (tasklist)
-                            {
-                                tasklist.Add(ex.Data);
-                            }
-                        };
-                        ProcPid.BeginOutputReadLine();
+                            tasklist.Add(line);
+                        }
+                        reader.Close();
                         ProcPid.WaitForExit();
                         ProcPid.Close();
                     }
@@ -177,14 +176,13 @@ namespace RouteTableTool
                         ProcIP.StartInfo.RedirectStandardOutput = true;
                         ProcIP.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         ProcIP.Start();
-                        ProcIP.OutputDataReceived += (s, ex) =>
+                        StreamReader reader = ProcIP.StandardOutput;
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
                         {
-                            lock (netstat)
-                            {
-                                netstat.Add(ex.Data);
-                            }
-                        };
-                        ProcIP.BeginOutputReadLine();
+                            netstat.Add(line);
+                        }
+                        reader.Close();
                         ProcIP.WaitForExit();
                         ProcIP.Close();
                     }
@@ -213,7 +211,6 @@ namespace RouteTableTool
                         }
                     });
                     GC.SuppressFinalize(this);
-                    Debug.WriteLine("inspect is started");
                 }
                 Thread.Sleep(2000);
             }
