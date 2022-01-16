@@ -218,14 +218,14 @@ namespace RouteTableTool
 
         private void ActionStart_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(ProcessName.Text) && !ipsworker.IsBusy)
+            if (!string.IsNullOrEmpty(ProcessName.Text.Trim()) && !ipsworker.IsBusy)
             {
                 processname = ProcessName.Text.Trim();
                 loop = true;
                 ipsworker.DoWork += new DoWorkEventHandler(DoWork);
                 ipsworker.RunWorkerAsync();
+                ActionStart.IsEnabled = false;
             }
-            ActionStart.IsEnabled = false;
         }
 
         private void ActionStop_Click(object sender, RoutedEventArgs e)
